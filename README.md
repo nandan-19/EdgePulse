@@ -20,46 +20,46 @@ flowchart LR
 
     %% Nodes
     subgraph Producer Layer
-        P1(Simulated Patients)
+        P1("Simulated Patients")
     end
     
-    K((Apache Kafka\n'raw-telemetry' topic)):::kafka
+    K(("Apache Kafka<br>raw-telemetry topic")):::kafka
     
     subgraph Spark Structured Streaming
-        S1[Raw Ingestion\n5s trigger]:::spark
-        S2[Anomaly Detection\n5s trigger]:::spark
-        S3[Window Aggregation\n30s trigger]:::spark
+        S1["Raw Ingestion<br>5s trigger"]:::spark
+        S2["Anomaly Detection<br>5s trigger"]:::spark
+        S3["Window Aggregation<br>30s trigger]"]:::spark
     end
     
     subgraph PostgreSQL
-        DB1[(raw_telemetry)]:::pg
-        DB2[(anomalies)]:::pg
-        DB3[(processed_telemetry)]:::pg
+        DB1[("raw_telemetry")]:::pg
+        DB2[("anomalies")]:::pg
+        DB3[("processed_telemetry")]:::pg
     end
     
     subgraph Frontend UIs
-        NJS[Next.js Dashboard\nSSE Push]:::dash
-        ST[Streamlit Dashboard\nPolling]:::dash
+        NJS["Next.js Dashboard<br>SSE Push"]:::dash
+        ST["Streamlit Dashboard<br>Polling"]:::dash
     end
 
     %% Relationships
-    P1 -- "JSON\n~10 events/s" --> K
+    P1 -- "JSON<br>~10 events/s" --> K
     
-    K -- "Subscribe" --> S1
-    K -- "Subscribe" --> S2
-    K -- "Subscribe" --> S3
+    K -- Subscribe --> S1
+    K -- Subscribe --> S2
+    K -- Subscribe --> S3
     
     S1 -- "JDBC Append" --> DB1
     S2 -- "JDBC Append" --> DB2
     S3 -- "JDBC Append" --> DB3
     
-    DB1 -- "pg.Pool\nAPI Routes" --> NJS
-    DB2 -- "pg.Pool\nAPI Routes" --> NJS
-    DB3 -- "pg.Pool\nAPI Routes" --> NJS
+    DB1 -- "pg.Pool<br>API Routes" --> NJS
+    DB2 -- "pg.Pool<br>API Routes" --> NJS
+    DB3 -- "pg.Pool<br>API Routes" --> NJS
 
-    DB1 -. "SQLAlchemy" .-> ST
-    DB2 -. "SQLAlchemy" .-> ST
-    DB3 -. "SQLAlchemy" .-> ST
+    DB1 -. SQLAlchemy .-> ST
+    DB2 -. SQLAlchemy .-> ST
+    DB3 -. SQLAlchemy .-> ST
 
     class P1 gen;
 ```
