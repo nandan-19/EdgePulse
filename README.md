@@ -3,6 +3,8 @@
 
 > **Big Data Analytics Project** — Kafka · Spark Structured Streaming · PostgreSQL · Next.js · Streamlit
 
+**EdgePulse** is an end-to-end, event-driven data pipeline designed to simulate, process, and visualize physiological telemetry in real-time. Built for high-throughput healthcare analytics, it continuously ingests vital signs from simulated ICU patients via Apache Kafka, processes them using PySpark Structured Streaming for anomaly detection and sliding-window aggregations, stores the results in PostgreSQL, and serves sub-second updates to a high-performance Next.js dashboard using Server-Sent Events (SSE).
+
 ---
 
 ## 📐 Architecture
@@ -18,14 +20,14 @@ flowchart LR
 
     %% Nodes
     subgraph Producer Layer
-        P1(Patient 1) & P2(Patient 2) & P3(...) & P8(Patient 8)
+        P1(Simulated Patients)
     end
     
     K((Apache Kafka\n'raw-telemetry' topic)):::kafka
     
     subgraph Spark Structured Streaming
-        S1[Raw Ingestion\n2s trigger]:::spark
-        S2[Anomaly Detection\n2s trigger]:::spark
+        S1[Raw Ingestion\n5s trigger]:::spark
+        S2[Anomaly Detection\n5s trigger]:::spark
         S3[Window Aggregation\n30s trigger]:::spark
     end
     
@@ -41,7 +43,7 @@ flowchart LR
     end
 
     %% Relationships
-    P1 & P2 & P3 & P8 -- "JSON\n~10 events/s" --> K
+    P1 -- "JSON\n~10 events/s" --> K
     
     K -- "Subscribe" --> S1
     K -- "Subscribe" --> S2
@@ -51,10 +53,15 @@ flowchart LR
     S2 -- "JDBC Append" --> DB2
     S3 -- "JDBC Append" --> DB3
     
-    DB1 & DB2 & DB3 -- "pg.Pool\nAPI Routes" --> NJS
-    DB1 & DB2 & DB3 -- "SQLAlchemy" --> ST
+    DB1 -- "pg.Pool\nAPI Routes" --> NJS
+    DB2 -- "pg.Pool\nAPI Routes" --> NJS
+    DB3 -- "pg.Pool\nAPI Routes" --> NJS
 
-    class P1,P2,P3,P8 gen;
+    DB1 -. "SQLAlchemy" .-> ST
+    DB2 -. "SQLAlchemy" .-> ST
+    DB3 -. "SQLAlchemy" .-> ST
+
+    class P1 gen;
 ```
 
 ---
