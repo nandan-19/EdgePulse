@@ -25,6 +25,7 @@ if ! docker compose version &>/dev/null; then
 fi
 
 echo "[3/3] Building images and starting all services..."
+docker compose down -v  # Prevent Kafka cluster ID conflicts
 docker compose up --build -d
 
 echo ""
