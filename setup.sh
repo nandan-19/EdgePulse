@@ -12,7 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 echo "[1/3] Creating data directories..."
-mkdir -p data/raw data/processed data/checkpoints
+mkdir -p data/checkpoints
 
 echo "[2/3] Checking Docker & Docker Compose availability..."
 if ! command -v docker &>/dev/null; then
@@ -32,7 +32,7 @@ echo "✅  All services started."
 echo ""
 echo "  Kafka broker  → localhost:9092"
 echo "  PostgreSQL    → localhost:5432"
-echo "  Dashboard     → http://localhost:8501"
+echo "  Next.js UI    → http://localhost:3000"
 echo ""
 echo "Monitor logs:   docker compose logs -f"
 echo "Stop services:  docker compose down"

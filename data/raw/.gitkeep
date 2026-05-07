@@ -1,2 +1,0 @@
-# This directory holds raw telemetry files (local dev only).
-# At runtime, all data flows through Kafka → Spark → PostgreSQL.

@@ -8,11 +8,6 @@ kafka-python==2.0.2
 pyspark==3.5.0
 psycopg2-binary==2.9.9
 
-# ── Dashboard ─────────────────────────────────────────────────
-streamlit==1.32.0
-pandas==2.2.1
-plotly==5.20.0
-pyarrow==15.0.2
 
 # ── Common ────────────────────────────────────────────────────
 python-dotenv==1.0.1

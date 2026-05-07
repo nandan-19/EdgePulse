@@ -13,12 +13,12 @@ interface Window {
 }
 
 function trendIcon(vals: number[]) {
-  if (vals.length < 2) return <Minus className="w-3 h-3 text-slate-500" />;
+  if (vals.length < 2) return null;
   const delta = vals[vals.length - 1] - vals[0];
-  if (Math.abs(delta) < 1) return <Minus className="w-3 h-3 text-slate-500" />;
+  if (Math.abs(delta) < 1) return null;
   return delta > 0
-    ? <TrendingUp className="w-3 h-3 text-red-400" />
-    : <TrendingDown className="w-3 h-3 text-emerald-400" />;
+    ? <TrendingUp className="w-3 h-3 text-red-500" />
+    : <TrendingDown className="w-3 h-3 text-emerald-500" />;
 }
 
 export default function WindowTrendChart({ patientId }: { patientId: string }) {
@@ -33,7 +33,7 @@ export default function WindowTrendChart({ patientId }: { patientId: string }) {
   }, [patientId]);
 
   if (data.length === 0) return (
-    <div className="card p-4 text-center text-slate-600 text-sm">
+    <div className="card p-4 text-center text-slate-500 text-sm font-medium">
       ⏳ Waiting for 5-min window data (Spark aggregates every 30s)…
     </div>
   );
@@ -56,15 +56,15 @@ export default function WindowTrendChart({ patientId }: { patientId: string }) {
   const spo2s = display.map(d => d.spo2);
 
   return (
-    <div className="card p-4 mt-3">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-slate-300">
-          📊 5-min Rolling Averages · <span className="text-blue-400">{patientId}</span>
+    <div className="card p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-slate-700">
+          📊 5-min Rolling Averages · <span className="text-blue-600 font-mono">{patientId}</span>
         </h3>
-        <div className="flex items-center gap-3 text-xs text-slate-500">
-          <span className="flex items-center gap-1">{trendIcon(hrs)} HR trend</span>
-          <span className="flex items-center gap-1">{trendIcon(spo2s)} SpO₂ trend</span>
-          <span className="bg-purple-500/20 text-purple-400 border border-purple-500/30 px-2 py-0.5 rounded-full">
+        <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
+          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">{trendIcon(hrs)} HR trend</span>
+          <span className="flex items-center gap-1.5 bg-slate-50 px-2 py-1 rounded-md border border-slate-100">{trendIcon(spo2s)} SpO₂ trend</span>
+          <span className="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-1 rounded-md font-bold">
             {display.length} windows
           </span>
         </div>
@@ -74,29 +74,29 @@ export default function WindowTrendChart({ patientId }: { patientId: string }) {
         <AreaChart data={display} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="hrGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#f87171" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#f87171" stopOpacity={0} />
+              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="spo2Grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#34d399" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+              <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-          <XAxis dataKey="time" tick={{ fill: '#475569', fontSize: 10 }} />
-          <YAxis tick={{ fill: '#475569', fontSize: 10 }} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+          <XAxis dataKey="time" tick={{ fill: '#64748b', fontSize: 10, fontWeight: 500 }} axisLine={false} tickLine={false} dy={4} />
+          <YAxis tick={{ fill: '#64748b', fontSize: 10, fontWeight: 500 }} axisLine={false} tickLine={false} dx={-4} />
           <Tooltip
-            contentStyle={{ background: '#0f172a', border: '1px solid #334155', borderRadius: 8, fontSize: 12 }}
-            labelStyle={{ color: '#94a3b8' }}
+            contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+            labelStyle={{ color: '#475569', fontWeight: 600, marginBottom: 4 }}
             formatter={(v: number, name: string) => [v, name === 'hr' ? 'Avg HR' : 'Avg SpO₂']}
           />
-          <ReferenceLine y={120} stroke="#ef444450" strokeDasharray="4 4" label={{ value: 'HR limit', fill: '#ef4444', fontSize: 9 }} />
-          <ReferenceLine y={92}  stroke="#f5970050" strokeDasharray="4 4" label={{ value: 'SpO₂ min', fill: '#f59700', fontSize: 9 }} />
-          <Area type="monotone" dataKey="hr"   name="hr"   stroke="#f87171" fill="url(#hrGrad)"   strokeWidth={2} dot={{ r: 3, fill: '#f87171' }} isAnimationActive={false} />
-          <Area type="monotone" dataKey="spo2" name="spo2" stroke="#34d399" fill="url(#spo2Grad)" strokeWidth={2} dot={{ r: 3, fill: '#34d399' }} isAnimationActive={false} />
+          <ReferenceLine y={120} stroke="#ef444460" strokeDasharray="4 4" label={{ value: 'HR limit', fill: '#ef4444', fontSize: 10, fontWeight: 600 }} />
+          <ReferenceLine y={92}  stroke="#f59e0b60" strokeDasharray="4 4" label={{ value: 'SpO₂ min', fill: '#f59e0b', fontSize: 10, fontWeight: 600 }} />
+          <Area type="monotone" dataKey="hr"   name="hr"   stroke="#ef4444" fill="url(#hrGrad)"   strokeWidth={2.5} dot={{ r: 3, fill: '#ef4444', strokeWidth: 0 }} isAnimationActive={false} />
+          <Area type="monotone" dataKey="spo2" name="spo2" stroke="#10b981" fill="url(#spo2Grad)" strokeWidth={2.5} dot={{ r: 3, fill: '#10b981', strokeWidth: 0 }} isAnimationActive={false} />
         </AreaChart>
       </ResponsiveContainer>
-      <p className="text-[10px] text-slate-600 mt-1">
+      <p className="text-[10px] text-slate-400 mt-2 font-medium text-center">
         Computed by Spark Window Aggregation · 5-min window · 1-min step · 30s watermark
       </p>
     </div>

@@ -1,7 +1,7 @@
 # EdgePulse
 ### Real-Time Physiological Telemetry Analytics
 
-> **Big Data Analytics Project** — Kafka · Spark Structured Streaming · PostgreSQL · Next.js · Streamlit
+> **Big Data Analytics Project** — Kafka · Spark Structured Streaming · PostgreSQL · Next.js
 
 **EdgePulse** is an end-to-end, event-driven data pipeline designed to simulate, process, and visualize physiological telemetry in real-time. Built for high-throughput healthcare analytics, it continuously ingests vital signs from simulated ICU patients via Apache Kafka, processes them using PySpark Structured Streaming for anomaly detection and sliding-window aggregations, stores the results in PostgreSQL, and serves sub-second updates to a high-performance Next.js dashboard using Server-Sent Events (SSE).
 
@@ -28,7 +28,7 @@ flowchart LR
     subgraph Spark Structured Streaming
         S1["Raw Ingestion<br>5s trigger"]:::spark
         S2["Anomaly Detection<br>5s trigger"]:::spark
-        S3["Window Aggregation<br>30s trigger]"]:::spark
+        S3["Window Aggregation<br>30s trigger"]:::spark
     end
     
     subgraph PostgreSQL
@@ -39,7 +39,6 @@ flowchart LR
     
     subgraph Frontend UIs
         NJS["Next.js Dashboard<br>SSE Push"]:::dash
-        ST["Streamlit Dashboard<br>Polling"]:::dash
     end
 
     %% Relationships
@@ -56,10 +55,6 @@ flowchart LR
     DB1 -- "pg.Pool<br>API Routes" --> NJS
     DB2 -- "pg.Pool<br>API Routes" --> NJS
     DB3 -- "pg.Pool<br>API Routes" --> NJS
-
-    DB1 -. SQLAlchemy .-> ST
-    DB2 -. SQLAlchemy .-> ST
-    DB3 -. SQLAlchemy .-> ST
 
     class P1 gen;
 ```
@@ -90,16 +85,12 @@ edgepulse/
 │       ├── components/        # React components (PipelineFlow, VitalsChart, etc.)
 │       └── lib/db.ts          # PostgreSQL connection pool
 │
-├── dashboard/                 # Streamlit real-time dashboard (Alternative UI)
-│   ├── app.py                 # Main UI (cards, charts, anomaly feed)
-│   ├── charts.py              # Plotly chart factory
-│   └── dashboard_utils.py     # PostgreSQL query helpers
-│
+
 ├── infrastructure/
 │   └── postgres/
 │       └── init.sql           # Schema creation + indexes
 │
-├── docker-compose.yml         # Full orchestration (8 services)
+├── docker-compose.yml         # Full orchestration (7 services)
 ├── setup.sh                   # One-command setup + launch
 └── README.md
 ```
@@ -132,7 +123,6 @@ docker compose up --build -d
 | Service               | URL / Address           |
 |-----------------------|-------------------------|
 | **Next.js Dashboard** | **http://localhost:3000** |
-| Streamlit Dashboard   | http://localhost:8501   |
 | PostgreSQL            | localhost:5432          |
 | Kafka broker          | localhost:9092          |
 
@@ -193,15 +183,11 @@ Fault tolerance is provided by **checkpointing** to named Docker volumes.
 | HR > 110 at rest/recovering    | RESTING_TACHYCARDIA    | MEDIUM   |
 | HR < 45                        | BRADYCARDIA            | MEDIUM   |
 
-### 5. Dashboards
-**Next.js 14 Dashboard (Primary)**
+### 5. Dashboard (Next.js 14)
 - **Server-Sent Events (SSE)** for sub-second, push-based data delivery without heavy polling.
 - Custom **Canvas-based animated pipeline visualization** showing live throughput.
 - Recharts-powered time-series and windowed trend charts.
 - Toast notifications for CRITICAL/HIGH anomalies.
-
-**Streamlit Dashboard (Alternative)**
-- Plotly-powered charts with a Python-native data manipulation backend.
 
 ### 6. Storage (PostgreSQL)
 | Table                | Contents                                        |

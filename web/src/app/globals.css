@@ -2,16 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-body { @apply bg-slate-950 text-slate-100; font-family: 'Inter', sans-serif; }
+body { 
+  @apply bg-slate-50 text-slate-800; 
+  font-family: 'Inter', sans-serif; 
+}
 
 @layer utilities {
-  .card { @apply bg-slate-800/60 border border-slate-700/50 rounded-xl backdrop-blur-sm; }
-  .badge-critical { @apply bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
-  .badge-high     { @apply bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
-  .badge-medium   { @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
-  .glow-blue  { box-shadow: 0 0 20px rgba(59,130,246,0.25); }
-  .glow-red   { box-shadow: 0 0 20px rgba(239,68,68,0.35); }
-  .glow-green { box-shadow: 0 0 20px rgba(16,185,129,0.25); }
+  .card { 
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm; 
+  }
+  .badge-critical { 
+    @apply bg-red-100 text-red-700 border border-red-200 text-xs px-2 py-0.5 rounded-md font-semibold; 
+  }
+  .badge-high { 
+    @apply bg-orange-100 text-orange-700 border border-orange-200 text-xs px-2 py-0.5 rounded-md font-semibold; 
+  }
+  .badge-medium { 
+    @apply bg-yellow-100 text-yellow-700 border border-yellow-200 text-xs px-2 py-0.5 rounded-md font-medium; 
+  }
 }
 
 /* Flow path animation */

@@ -10,20 +10,20 @@ import { Database, Zap, Users, AlertTriangle, Radio } from 'lucide-react';
 
 interface Anomaly {
   patient_id: string; ts: string; heart_rate: number; spo2: number;
-  temperature: number; anomaly_type: string; severity: string; detected_at: string;
+  temperature: number; respiratory_rate: number; anomaly_type: string; severity: string; detected_at: string;
 }
 interface Stats { total: number; last_min: number; last_10s: number; }
 
-function StatBadge({ icon: Icon, label, value, sub, accent = 'text-white' }: {
+function StatBadge({ icon: Icon, label, value, sub, accent = 'text-blue-600' }: {
   icon: React.ElementType; label: string; value: string | number; sub?: string; accent?: string;
 }) {
   return (
-    <div className="card px-5 py-4 flex items-center gap-3">
-      <div className="p-2 bg-slate-700/50 rounded-lg"><Icon className={`w-5 h-5 ${accent}`} /></div>
+    <div className="card px-5 py-4 flex items-center gap-4">
+      <div className={`p-2.5 rounded-lg bg-slate-50 border border-slate-100 ${accent}`}><Icon className="w-5 h-5" /></div>
       <div>
-        <div className="text-xs text-slate-500">{label}</div>
+        <div className="text-xs text-slate-500 font-medium">{label}</div>
         <div className={`text-xl font-bold tabular-nums font-mono ${accent}`}>{value}</div>
-        {sub && <div className="text-xs text-slate-500">{sub}</div>}
+        {sub && <div className="text-xs text-slate-400">{sub}</div>}
       </div>
     </div>
   );
@@ -59,16 +59,16 @@ export default function DashboardPage() {
     <div className="max-w-screen-2xl mx-auto px-6 py-6 space-y-6">
       {/* Stats bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatBadge icon={Database} label="Total Ingested" value={stats.total.toLocaleString()} accent="text-blue-400" />
-        <StatBadge icon={Zap}      label="Events / Minute" value={stats.last_min} sub="Kafka → Spark → DB" accent="text-amber-400" />
-        <StatBadge icon={Users}    label="Active Patients" value={vitals.length} sub="streaming now" accent="text-emerald-400" />
-        <StatBadge icon={AlertTriangle} label="Critical Alerts" value={criticalCount} sub="abnormal vitals" accent={criticalCount > 0 ? 'text-red-400' : 'text-slate-400'} />
+        <StatBadge icon={Database} label="Total Ingested" value={stats.total.toLocaleString()} accent="text-blue-600" />
+        <StatBadge icon={Zap}      label="Events / Minute" value={stats.last_min} sub="Kafka → Spark → DB" accent="text-orange-500" />
+        <StatBadge icon={Users}    label="Active Patients" value={vitals.length} sub="streaming now" accent="text-emerald-600" />
+        <StatBadge icon={AlertTriangle} label="Critical Alerts" value={criticalCount} sub="abnormal vitals" accent={criticalCount > 0 ? 'text-red-600' : 'text-slate-400'} />
       </div>
 
       {/* Live indicator + last push time */}
       <div className="flex items-center gap-2 text-xs text-slate-500">
-        <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-        <span>SSE stream active · last push <span className="font-mono text-slate-400">{lastPush}</span></span>
+        <Radio className="w-3.5 h-3.5 text-emerald-500 animate-pulse" />
+        <span>SSE stream active · last push <span className="font-mono text-slate-600 font-medium">{lastPush}</span></span>
       </div>
 
       {/* Patient grid */}
@@ -92,7 +92,7 @@ export default function DashboardPage() {
 
       {/* Charts + Anomalies */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="lg:col-span-3 space-y-0">
+        <div className="lg:col-span-3 space-y-4">
           {selected && <VitalsChart patientId={selected} />}
           {selected && <WindowTrendChart patientId={selected} />}
         </div>
