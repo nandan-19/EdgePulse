@@ -1,0 +1,95 @@
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+wheels/
+pip-wheel-metadata/
+.installed.cfg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# mypy / pyright
+.mypy_cache/
+.pyright/
+
+# ─── PySpark / Hadoop ─────────────────────────────────────────────────────────
+derby.log
+metastore_db/
+spark-warehouse/
+
+# ─── Data directories (keep structure via .gitkeep) ───────────────────────────
+data/raw/*
+data/processed/*
+data/checkpoints/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/checkpoints/.gitkeep
+
+# ─── Next.js / Node ───────────────────────────────────────────────────────────
+web/node_modules/
+web/.next/
+web/out/
+web/.env
+web/.env.local
+web/.env.*.local
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/.pnpm-debug.log*
+
+# ─── Environment & Secrets ────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.secret
+secrets/
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+# Ignore generated compose overrides but keep the main one
+docker-compose.override.yml
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+*.out
+
+# ─── OS & Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── Jupyter (if used locally) ────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ─── Streamlit cache ──────────────────────────────────────────────────────────
+.streamlit/secrets.toml

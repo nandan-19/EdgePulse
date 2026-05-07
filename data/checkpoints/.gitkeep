@@ -1,0 +1,1 @@
+# Spark checkpoint data lives here (mounted Docker volume at runtime).

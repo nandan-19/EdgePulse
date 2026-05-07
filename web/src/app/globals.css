@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { @apply bg-slate-950 text-slate-100; font-family: 'Inter', sans-serif; }
+
+@layer utilities {
+  .card { @apply bg-slate-800/60 border border-slate-700/50 rounded-xl backdrop-blur-sm; }
+  .badge-critical { @apply bg-red-500/20 text-red-400 border border-red-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
+  .badge-high     { @apply bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
+  .badge-medium   { @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-xs px-2 py-0.5 rounded-full font-semibold; }
+  .glow-blue  { box-shadow: 0 0 20px rgba(59,130,246,0.25); }
+  .glow-red   { box-shadow: 0 0 20px rgba(239,68,68,0.35); }
+  .glow-green { box-shadow: 0 0 20px rgba(16,185,129,0.25); }
+}
+
+/* Flow path animation */
+.flow-path { stroke-dasharray: 8 6; animation: dash 1.2s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -14; } }
+
+/* Particle dot on flow */
+.particle { animation: along 2s linear infinite; }
+@keyframes along {
+  0%   { offset-distance: 0%;   opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { offset-distance: 100%; opacity:0; }
+}
